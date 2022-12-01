@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.limbo.light.log.config.LogAspectAutoConfiguration,\
+  com.limbo.light.log.config.FeignLogAutoConfiguration,\
+  com.limbo.light.log.config.SpringAsyncTraceLogConfig
