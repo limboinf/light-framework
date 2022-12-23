@@ -29,6 +29,21 @@
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
+        <!-- IDEA更好的属性提示, mvn compile 生成 spring-configuration-metadata.json 配置文件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 编译生成 自动配置类元数据，过滤出不满足条件(@Conditional...)的配置，避免springboot启动时检查, 提示启动时间
+            生成spring-autoconfigure-metadata.properties 文件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- json -->
         <dependency>
             <groupId>com.alibaba</groupId>
