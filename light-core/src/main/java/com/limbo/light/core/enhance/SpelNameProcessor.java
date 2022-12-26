@@ -1,6 +1,7 @@
 package com.limbo.light.core.enhance;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * 表达式解析器
@@ -19,5 +20,8 @@ public interface SpelNameProcessor {
      * @return {@link String}
      */
     String parse(Object[] args, Method method, String key);
+
+    List<String> parseKeys(Object[] args, Method method, String[] keys);
+    
 
 }

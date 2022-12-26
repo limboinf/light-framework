@@ -8,6 +8,8 @@ import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -39,5 +41,14 @@ public class NameSpelExpressionProcessor implements SpelNameProcessor {
         MethodBasedEvaluationContext context = new MethodBasedEvaluationContext(null, method, args, NAME_DISCOVERER);
         Object value = PARSER.parseExpression(key).getValue(context);
         return Objects.isNull(value) ? null : Objects.toString(value);
+    }
+
+    @Override
+    public List<String> parseKeys(Object[] args, Method method, String[] keys) {
+        List<String> keyRes = new ArrayList<>();
+        for (String key : keys) {
+            keyRes.add(parse(args, method, key));
+        }
+        return keyRes;
     }
 }
