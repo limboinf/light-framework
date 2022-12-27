@@ -3,7 +3,7 @@ package com.limbo.light.lighteventhubspringbootstarter.eventhub;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,12 +26,12 @@ public class EventHubDto<T> {
     /**
      * 消息时间戳
      */
-    private Long ts;
+    private long ts;
 
     /**
      * 消息体
      */
-    private @NonNull List<T> records;
+    private List<T> records;
 
     public static <T> EventHubDto<T> build(@NonNull List<T> items) {
         EventHubDto<T> dto = new EventHubDto<>();

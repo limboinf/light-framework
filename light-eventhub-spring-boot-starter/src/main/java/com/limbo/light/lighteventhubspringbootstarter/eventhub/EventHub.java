@@ -92,14 +92,14 @@ public class EventHub implements DisposableBean, ApplicationContextAware {
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
         log.info("销毁EventHub bean, 清理工作");
         finished.getAndSet(true);
         try {
             executorMap.forEach((s, executor) -> {
                 executor.shutdown();
                 try {
-                    executor.awaitTermination(1, TimeUnit.SECONDS);
+                    executor.awaitTermination(3, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     log.error("executor.awaitTermination 错误，中断线程！", e);
                     Thread.currentThread().interrupt();
