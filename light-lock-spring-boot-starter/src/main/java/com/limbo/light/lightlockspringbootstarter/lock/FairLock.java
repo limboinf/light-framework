@@ -16,7 +16,7 @@ public class FairLock extends AbsLock {
     private final RedissonClient redissonClient;
 
     public FairLock(LockInfo lockInfo, RedissonClient redissonClient) {
-        super(lockInfo, redissonClient);
+        super(lockInfo);
         this.lockInfo = lockInfo;
         this.redissonClient = redissonClient;
     }

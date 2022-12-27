@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -45,13 +46,32 @@ public class LightLockTest {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         IntStream.range(0, 5).forEach(i -> {
             executorService.submit(() -> {
-                System.out.println(String.format("threadId: %d", Thread.currentThread().getId()));
                 testService.getValue("jack", 100, 4);
             });
         });
 
         executorService.awaitTermination(30, TimeUnit.SECONDS);
 
+    }
+
+    @Test
+    public void lockTimeoutCustom() throws InterruptedException {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        CountDownLatch latch = new CountDownLatch(2);
+
+        // 两个线程操作的key都一样, 模拟获得锁超时
+        executorService.submit(() -> {
+            testService.test2("limbo", 5);
+            latch.countDown();
+        });
+
+        executorService.submit(() -> {
+            testService.test2("limbo", 6);
+            latch.countDown();
+        });
+
+        latch.await(12, TimeUnit.SECONDS);
     }
 
 }

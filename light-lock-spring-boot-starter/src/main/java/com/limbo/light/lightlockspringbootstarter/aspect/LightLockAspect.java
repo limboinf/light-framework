@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Objects;
@@ -57,8 +58,16 @@ public class LightLockAspect {
 
         // 如果获取锁失败则进入失败逻辑
         if (Boolean.FALSE.equals(isAcquire)) {
-            handleAcquireTimeout(lightLock, lockInfo, lock, joinPoint);
+            log.warn("获取锁失败: [{}]", lockInfo);
+            if (StringUtils.isNotBlank(lightLock.customLockTimeoutStrategy())) {
+                // 处理自定义超时策略
+                return handleCustomLockStrategy(lightLock.customLockTimeoutStrategy(), joinPoint);
+            } else {
+                // 执行默认策略
+                lightLock.lockTimeoutStrategy().handle(lockInfo, lock, joinPoint);
+            }
         }
+
         log.info("获得锁成功: {}", lockInfo);
         currentThreadLock.get(currentLock).setLock(lock);
         currentThreadLock.get(currentLock).setState(Boolean.TRUE);
@@ -116,19 +125,6 @@ public class LightLockAspect {
         }
     }
 
-    /**
-     * 处理获取锁超时
-     */
-    private void handleAcquireTimeout(LightLock lightLock, LockInfo lockInfo, Lock lock, JoinPoint joinPoint) {
-        log.warn("获取锁失败: [{}]", lockInfo);
-        if (StringUtils.isNotBlank(lightLock.customLockTimeoutStrategy())) {
-            // 处理自定义超时策略
-            handleCustomLockStrategy(lightLock.customLockTimeoutStrategy(), joinPoint);
-        } else {
-            // 执行默认策略
-            lightLock.lockTimeoutStrategy().handle(lockInfo, lock, joinPoint);
-        }
-    }
 
     /**
      * 处理释放超时
@@ -159,22 +155,27 @@ public class LightLockAspect {
      * @param joinPoint     连接点
      * @return {@link Object}
      */
-    private Object handleCustomLockStrategy(String customHandler, JoinPoint joinPoint) {
+    private Object handleCustomLockStrategy(String customHandler, JoinPoint joinPoint) throws Throwable {
+        log.debug("执行自定义失败处理策略: {}", customHandler);
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Object target = joinPoint.getTarget();
         Method declaredMethod;
         try {
-            declaredMethod = methodSignature.getClass().getDeclaredMethod(customHandler, methodSignature.getParameterTypes());
+            declaredMethod = target.getClass().getDeclaredMethod(customHandler, methodSignature.getParameterTypes());
             declaredMethod.setAccessible(true);
         } catch (NoSuchMethodException e) {
-            throw new LightLockException(String.format("Method: [%s] not found", customHandler));
+            log.error("Not found the declared method: {} in class : {}", customHandler, target.getClass().getName());
+            throw new IllegalArgumentException(String.format("Method: [%s] not found", customHandler), e);
         }
 
         Object res;
         try {
             res = declaredMethod.invoke(target, joinPoint.getArgs());
-        } catch (Exception e) {
-            throw new LightLockException(String.format("Method: [%s] invoke error", customHandler));
+        } catch (IllegalAccessException e) {
+            log.error("declared method: {} invoke error in class : {}", customHandler, target.getClass().getName());
+            throw new LightLockException(String.format("Method: [%s] invoke error", customHandler), e);
+        } catch (InvocationTargetException e) {
+            throw e.getTargetException();
         }
         return res;
     }

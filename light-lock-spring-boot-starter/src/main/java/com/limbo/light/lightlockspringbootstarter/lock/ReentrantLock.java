@@ -18,7 +18,7 @@ public class ReentrantLock extends AbsLock {
     private final RedissonClient redissonClient;
 
     public ReentrantLock(LockInfo lockInfo, RedissonClient redissonClient) {
-        super(lockInfo, redissonClient);
+        super(lockInfo);
         this.lockInfo = lockInfo;
         this.redissonClient = redissonClient;
     }

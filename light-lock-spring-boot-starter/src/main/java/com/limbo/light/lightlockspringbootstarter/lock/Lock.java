@@ -3,7 +3,7 @@ package com.limbo.light.lightlockspringbootstarter.lock;
 /**
  * lock
  *
- * @author fangpeng
+ * @author limbo
  * @since 2022/12/26 14:03
  */
 public interface Lock {

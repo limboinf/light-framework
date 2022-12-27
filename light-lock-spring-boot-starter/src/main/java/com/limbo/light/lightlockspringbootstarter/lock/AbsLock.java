@@ -3,7 +3,6 @@ package com.limbo.light.lightlockspringbootstarter.lock;
 import com.limbo.light.lightlockspringbootstarter.domain.LockInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -12,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * abstract lock
  *
- * @author fangpeng
+ * @author limbo
  * @since 2022/12/26 14:21
  */
 @Slf4j
@@ -20,11 +19,9 @@ public abstract class AbsLock implements Lock {
 
     private RLock rLock;
     private final LockInfo lockInfo;
-    private final RedissonClient redissonClient;
 
-    protected AbsLock(LockInfo lockInfo, RedissonClient redissonClient) {
+    protected AbsLock(LockInfo lockInfo) {
         this.lockInfo = lockInfo;
-        this.redissonClient = redissonClient;
     }
 
     public String getKey() {
