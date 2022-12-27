@@ -1,4 +1,4 @@
-package com.limbo.light.lightlockspringbootstarter.support.config;
+package com.limbo.light.lightlockspringbootstarter.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -24,8 +24,11 @@ public class LockConfig {
      */
     public static final long DEFAULT_RELEASE_TIME = 60;
 
+    private Boolean enabled;
+
     private String address;
     private String password;
+    private ClusterServer clusterServer;
     private int database = 1;
     private long waitTime = DEFAULT_WAIT_TIME;
     private long leaseTime = DEFAULT_RELEASE_TIME;

@@ -1,4 +1,4 @@
-package com.limbo.light.lightlockspringbootstarter.support.domain;
+package com.limbo.light.lightlockspringbootstarter.domain;
 
 /**
  * lock timeout exception

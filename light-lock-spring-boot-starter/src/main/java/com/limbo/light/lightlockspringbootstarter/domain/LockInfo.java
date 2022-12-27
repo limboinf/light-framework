@@ -1,5 +1,6 @@
-package com.limbo.light.lightlockspringbootstarter.support.domain;
+package com.limbo.light.lightlockspringbootstarter.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * @since 2022/12/26 14:00
  */
 @Data
+@AllArgsConstructor
 public class LockInfo {
 
     private LockType lockType;

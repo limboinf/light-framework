@@ -1,6 +1,6 @@
-package com.limbo.light.lightlockspringbootstarter.support.lock;
+package com.limbo.light.lightlockspringbootstarter.lock;
 
-import com.limbo.light.lightlockspringbootstarter.support.domain.LockInfo;
+import com.limbo.light.lightlockspringbootstarter.domain.LockInfo;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 

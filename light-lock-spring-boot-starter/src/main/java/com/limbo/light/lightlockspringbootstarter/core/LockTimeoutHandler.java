@@ -1,7 +1,7 @@
-package com.limbo.light.lightlockspringbootstarter.support.core;
+package com.limbo.light.lightlockspringbootstarter.core;
 
-import com.limbo.light.lightlockspringbootstarter.support.domain.LockInfo;
-import com.limbo.light.lightlockspringbootstarter.support.lock.Lock;
+import com.limbo.light.lightlockspringbootstarter.lock.Lock;
+import com.limbo.light.lightlockspringbootstarter.domain.LockInfo;
 import org.aspectj.lang.JoinPoint;
 
 /**

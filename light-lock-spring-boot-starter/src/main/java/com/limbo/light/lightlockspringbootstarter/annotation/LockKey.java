@@ -1,4 +1,4 @@
-package com.limbo.light.lightlockspringbootstarter.support.annotation;
+package com.limbo.light.lightlockspringbootstarter.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

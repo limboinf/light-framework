@@ -1,4 +1,4 @@
-package com.limbo.light.lightlockspringbootstarter.support.lock;
+package com.limbo.light.lightlockspringbootstarter.lock;
 
 /**
  * lock

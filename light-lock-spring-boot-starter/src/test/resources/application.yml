@@ -1,0 +1,11 @@
+light:
+  lock:
+    enabled: true
+    address: redis://127.0.0.1:6379
+
+logging:
+  level:
+    com:
+      limbo:
+        light:
+          lightlockspringbootstarter: debug

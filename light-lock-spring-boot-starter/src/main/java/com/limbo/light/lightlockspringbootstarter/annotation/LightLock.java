@@ -1,16 +1,16 @@
-package com.limbo.light.lightlockspringbootstarter.support.annotation;
+package com.limbo.light.lightlockspringbootstarter.annotation;
 
-import com.limbo.light.lightlockspringbootstarter.support.core.LockTimeoutStrategy;
-import com.limbo.light.lightlockspringbootstarter.support.core.ReleaseTimeoutStrategy;
-import com.limbo.light.lightlockspringbootstarter.support.domain.LockType;
+import com.limbo.light.lightlockspringbootstarter.core.ReleaseTimeoutStrategy;
+import com.limbo.light.lightlockspringbootstarter.core.LockTimeoutStrategy;
+import com.limbo.light.lightlockspringbootstarter.domain.LockType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static com.limbo.light.lightlockspringbootstarter.support.config.LockConfig.DEFAULT_RELEASE_TIME;
-import static com.limbo.light.lightlockspringbootstarter.support.config.LockConfig.DEFAULT_WAIT_TIME;
+import static com.limbo.light.lightlockspringbootstarter.config.LockConfig.DEFAULT_RELEASE_TIME;
+import static com.limbo.light.lightlockspringbootstarter.config.LockConfig.DEFAULT_WAIT_TIME;
 
 /**
  * 分布式锁注解

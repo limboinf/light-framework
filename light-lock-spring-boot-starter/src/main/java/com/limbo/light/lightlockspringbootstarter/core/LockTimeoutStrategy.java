@@ -1,8 +1,8 @@
-package com.limbo.light.lightlockspringbootstarter.support.core;
+package com.limbo.light.lightlockspringbootstarter.core;
 
-import com.limbo.light.lightlockspringbootstarter.support.domain.LockInfo;
-import com.limbo.light.lightlockspringbootstarter.support.domain.LockTimeoutException;
-import com.limbo.light.lightlockspringbootstarter.support.lock.Lock;
+import com.limbo.light.lightlockspringbootstarter.domain.LockInfo;
+import com.limbo.light.lightlockspringbootstarter.domain.LockTimeoutException;
+import com.limbo.light.lightlockspringbootstarter.lock.Lock;
 import org.aspectj.lang.JoinPoint;
 
 import java.util.concurrent.TimeUnit;
