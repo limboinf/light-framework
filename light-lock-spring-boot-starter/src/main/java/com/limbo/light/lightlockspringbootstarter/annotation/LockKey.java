@@ -15,6 +15,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LockKey {
 
+    /**
+     * 一般value不传，即使要传必须是 #root 引用根对象，或者 #this 引用当前上下文对象
+     *
+     * @return {@link String}
+     */
     String value() default "";
 
 }

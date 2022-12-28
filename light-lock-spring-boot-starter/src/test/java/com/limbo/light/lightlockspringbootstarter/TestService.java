@@ -24,7 +24,7 @@ public class TestService {
             lockType = LockType.Reentrant,
             waitTime = 5,
             leaseTime = 10,
-            keys = {"#userName"},
+            keys = {"#userName", "#sleepTime"},
             releaseTimeoutStrategy = ReleaseTimeoutStrategy.FAIL_FAST)
     public String getValue(String userName, @LockKey Integer id, int sleepTime) {
         log.info("userName: {} id: {} 业务逻辑处理...", userName, id);

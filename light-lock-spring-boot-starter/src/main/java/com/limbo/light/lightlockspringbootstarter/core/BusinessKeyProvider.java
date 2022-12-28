@@ -1,16 +1,14 @@
 package com.limbo.light.lightlockspringbootstarter.core;
 
+import com.limbo.light.core.enhance.SpELProcessor;
+import com.limbo.light.core.enhance.impl.DefaultSpELProcessor;
 import com.limbo.light.lightlockspringbootstarter.annotation.LightLock;
 import com.limbo.light.lightlockspringbootstarter.annotation.LockKey;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
-import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -20,6 +18,7 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 获取用户自定义key
@@ -28,11 +27,8 @@ import java.util.Objects;
  * @since 2022/12/26 16:42
  */
 @Slf4j
+@SuppressWarnings("all")
 public class BusinessKeyProvider {
-
-    private final ParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
-
-    private final ExpressionParser parser = new SpelExpressionParser();
 
     public String getKeyName(JoinPoint joinPoint, LightLock lightLock) {
         List<String> keyList = new ArrayList<>();
@@ -59,7 +55,10 @@ public class BusinessKeyProvider {
     }
 
     /**
-     * get keys
+     * <p>
+     * 解析 LightLock注解中的keys() 自定义的业务key
+     * </p>
+     * @see LightLock
      *
      * @param definitionKeys  自定义业务key
      * @param method          方法
@@ -67,17 +66,22 @@ public class BusinessKeyProvider {
      * @return {@link List}<{@link String}>
      */
     private List<String> getSpelDefinitionKey(String[] definitionKeys, Method method, Object[] parameterValues) {
-        List<String> definitionKeyList = new ArrayList<>();
-        for (String definitionKey : definitionKeys) {
-            if (!ObjectUtils.isEmpty(definitionKey)) {
-                EvaluationContext context = new MethodBasedEvaluationContext(null, method, parameterValues, nameDiscoverer);
-                Object objKey = parser.parseExpression(definitionKey).getValue(context);
-                definitionKeyList.add(ObjectUtils.nullSafeToString(objKey));
-            }
-        }
-        return definitionKeyList;
+        EvaluationContext context = new MethodBasedEvaluationContext(null, method, parameterValues, SpELProcessor.NAME_DISCOVERER);
+        List<String> res = new DefaultSpELProcessor<String>(context).parseKeys(definitionKeys, String.class);
+        return res.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
+    /**
+     * <p>
+     * 解析 LockKey注解标记的参数列表中获取参数值
+     * </p>
+     *
+     * @see LockKey
+     *
+     * @param parameters      参数
+     * @param parameterValues 参数值
+     * @return {@link List}<{@link String}>
+     */
     private List<String> getParameterKey(Parameter[] parameters, Object[] parameterValues) {
         List<String> parameterKeys = new ArrayList<>();
         for (int i = 0; i < parameters.length; i++) {
@@ -88,8 +92,8 @@ public class BusinessKeyProvider {
                     parameterKeys.add(ObjectUtils.nullSafeToString(parameterValue));
                 } else {
                     StandardEvaluationContext context = new StandardEvaluationContext(parameterValues[i]);
-                    Object key = parser.parseExpression(lockKey.value()).getValue(context);
-                    parameterKeys.add(ObjectUtils.nullSafeToString(key));
+                    String res = new DefaultSpELProcessor<String>(context).parse(lockKey.value(), String.class);
+                    parameterKeys.add(ObjectUtils.nullSafeToString(res));
                 }
             }
         }
