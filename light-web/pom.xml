@@ -44,6 +44,7 @@
             <artifactId>light-core</artifactId>
         </dependency>
 
+        <!-- 配合jackson 解决JDK1.8的新时间类LocalDateTime的问题 -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>

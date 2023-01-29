@@ -55,7 +55,6 @@ public class JacksonAutoConfiguration {
 
             // 默认关闭，即使用BigDecimal.toString()序列化。开启后，使用BigDecimal.toPlainString序列化，不输出科学计数法的值。
             jacksonObjectMapperBuilder.featuresToEnable(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
-            jacksonObjectMapperBuilder.serializerByType(BigDecimal.class, ToStringSerializer.instance);
 
             // 默认关闭，将char[]数组序列化为String类型。若开启后序列化为JSON数组。
             jacksonObjectMapperBuilder.featuresToEnable(SerializationFeature.WRITE_CHAR_ARRAYS_AS_JSON_ARRAYS);
